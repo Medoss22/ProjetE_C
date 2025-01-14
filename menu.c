@@ -74,6 +74,11 @@ void start()
                 break;
             case 2: 
                 log = loge_in();
+                if (log)
+                {
+                    t = 1;
+                }
+                
                 if (log) {
                     while (t) 
                     {
@@ -131,7 +136,6 @@ void start()
                                 break;
                             case 0:
                                 printf("(^^) Au revoir !!\n");
-                                t = 0;
                                 break;
                             default:
                                 printf("Choix invalide, veuillez réessayer.\n");
@@ -139,7 +143,7 @@ void start()
                     }
                 }
                 break;
-            case 0: // Quit
+            case 0:
                 printf("(^^) Au revoir !!\n");
                 return;
             default:
