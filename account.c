@@ -8,55 +8,6 @@
 // Fichier CSV pour stocker les comptes
 #define ACCOUNT_FILE "data/accounts.csv"
 
-// Fonction pour enregistrer un nouveau compte
-/*void registerAccount(char *filename) {
-    Account account;
-    printf("Numéro de compte : ");
-    scanf("%d", &account.account_number);
-
-    printf("Nom : ");
-    scanf("%s", account.last_name);
-
-    printf("Prénom : ");
-    scanf("%s", account.first_name);
-
-    printf("Adresse : ");
-    scanf(" %[^\n]", account.address);
-
-    printf("Email : ");
-    scanf("%s", account.email);
-
-    printf("Téléphone : ");
-    scanf("%s", account.phone);
-
-    printf("Solde initial : ");
-    scanf("%f", &account.balance);
-
-    strcpy(account.status, "actif"); // Par défaut, le compte est actif
-
-    printf("Compte enregistré avec succès !\n");
-    printf("--------------------------------\n");
-    printf("********************************\n");
-    printf("--------------------------------\n");    
-    FILE *file = fopen(filename, "a"); // Ouvre le fichier en mode ajout
-    if (!file) {
-        perror("Erreur lors de l'ouverture du fichier CSV");
-        return;
-    }
-
-    fprintf(file, "%d, %s, %s, %s, %s, %s, %.2f, %s\n",
-            account.account_number,
-            account.last_name,
-            account.first_name,
-            account.address,
-            account.email,
-            account.phone,
-            account.balance,
-            account.status);
-
-    fclose(file);
-}
-*/
 /*-------------------------------------------------------------------------
 ---------------------------------------------------------------------------
 ---------------------------------------------------------------------------*/
@@ -309,29 +260,6 @@ int recherche_Compte(char File_name[]) {
         return -1; //compte introuvable
 	    }
 
-
- /*
-  int recherche_Compte(char File_name[],Account account []) {
-  	int num;
-	char nom,ligne[taille_maximalle];
-    int i=0;
-    File*fichier;
-    fichier=fopen(File_name,"r");
-    printf("entrez votre nom s'il vous plait!!");
-    gets(nom);
-    printf("enter le numero du compte :");
-    scanf("%d",&num);
-    while(fgets(ligne,taille_maximalle,fichier)!=NULL){
-            if ((account.account_number == num )&&(strcmp(account[i].last_name,nom)==0)){    
-            	fclose(fichier);
-                return i; // retourner indice account
-            }
-	 	      i++;
-     	}
-			fclose (fichier);
-                return -1; //compte introuvable
-	    } 
-*/
 
 
 void registerAccount(char *filename) {
