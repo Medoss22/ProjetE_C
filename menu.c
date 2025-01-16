@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <unistd.h>
 #include "fonction.h"
 
 void showMenu() {
@@ -136,6 +137,8 @@ void start()
                                 break;
                             case 0:
                                 printf("(^^) Au revoir !!\n");
+                                sleep(1);
+                                t = 0;
                                 break;
                             default:
                                 printf("Choix invalide, veuillez réessayer.\n");

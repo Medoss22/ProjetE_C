@@ -2,16 +2,13 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <unistd.h>
 #include "fonction.h"
 
 
 // Fichier CSV pour stocker les comptes
 #define ACCOUNT_FILE "data/accounts.csv"
 
-<<<<<<< HEAD
-
-=======
->>>>>>> origin/main
 /*-------------------------------------------------------------------------
 ---------------------------------------------------------------------------
 ---------------------------------------------------------------------------*/
@@ -371,12 +368,16 @@ bool loge_in() {
 
     rewind(file);
     while (fread(&P, sizeof(pass), 1, file)) {
-        printf("Debug: Checking Account %d, Password %s\n", P.Acc_nb, P.password);
         if (account_number == P.Acc_nb && strcmp(password, P.password) == 0) {
             fclose(file); 
+            #ifdef _WIN32
+                system("cls");
+            #else
+                system("clear");
+            #endif
             printf("Connexion réussie.\n");
-            int a;
-            scanf("%d",&a);
+            printf("S'il vous plaît, attendez.\n");
+            sleep(2);
             return true;
         }
     }
