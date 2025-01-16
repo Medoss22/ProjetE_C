@@ -8,7 +8,10 @@
 // Fichier CSV pour stocker les comptes
 #define ACCOUNT_FILE "data/accounts.csv"
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/main
 /*-------------------------------------------------------------------------
 ---------------------------------------------------------------------------
 ---------------------------------------------------------------------------*/
@@ -261,29 +264,6 @@ int recherche_Compte(char File_name[]) {
         return -1; //compte introuvable
 	    }
 
-
- /*
-  int recherche_Compte(char File_name[],Account account []) {
-  	int num;
-	char nom,ligne[taille_maximalle];
-    int i=0;
-    File*fichier;
-    fichier=fopen(File_name,"r");
-    printf("entrez votre nom s'il vous plait!!");
-    gets(nom);
-    printf("enter le numero du compte :");
-    scanf("%d",&num);
-    while(fgets(ligne,taille_maximalle,fichier)!=NULL){
-            if ((account.account_number == num )&&(strcmp(account[i].last_name,nom)==0)){    
-            	fclose(fichier);
-                return i; // retourner indice account
-            }
-	 	      i++;
-     	}
-			fclose (fichier);
-                return -1; //compte introuvable
-	    } 
-*/
 
 
 void registerAccount(char *filename) {
