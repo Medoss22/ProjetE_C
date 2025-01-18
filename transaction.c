@@ -56,6 +56,7 @@ void transfert(char *file_name)
         {
             t2 = 1;
             account.balance = account.balance + ST; //Ajouter de l'argent sur le account2
+            printf("le transfer de votre montant est bien effectué\n");
         }
 
 

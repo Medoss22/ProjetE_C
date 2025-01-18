@@ -21,7 +21,7 @@ void showMenu() {
 void menu0()
 {
     printf("Bienvenue dans notre application de gestion bancaire\n");
-        printf("-----------------------------------------------------\n");
+        printf("-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_\n\n");
         printf("1. Sign Up\n");
         printf("2. Log In\n");
         printf("0. Quit\n");
@@ -59,9 +59,9 @@ void start()
 
     while (1) 
     {
-        system("clear"); 
+        system("clear");
         menu0();
-        if (scanf("%d", &choix1) != 1) 
+        if (scanf("%d", &choix1) != 1)
         {
             printf("Entrée invalide.\n");
             exit(0);
@@ -73,7 +73,7 @@ void start()
                 registerAccount("/Users/mac/Desktop/ProjetEC/csv_files/accounts.csv");
                 showMenu2();
                 break;
-            case 2: 
+            case 2:
                 log = loge_in();
                 if (log)
                 {
@@ -136,7 +136,7 @@ void start()
                                 showMenu2();
                                 break;
                             case 0:
-                                printf("(^^) Au revoir !!\n");
+                                printf("Loading...\n");
                                 sleep(1);
                                 t = 0;
                                 break;

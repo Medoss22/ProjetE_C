@@ -1,6 +1,4 @@
-#ifndef ACCOUNT_H
 #include <stdbool.h>
-#define ACCOUNT_H
 #define taille_maximalle 1000
 
 
@@ -38,4 +36,3 @@ void showMenu();
 void showMenu2();
 void menu0();
 void start();
-#endif
