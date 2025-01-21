@@ -2,16 +2,68 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <time.h>
 #include <unistd.h>
 #include "fonction.h"
-
 
 
 /*-------------------------------------------------------------------------
 ---------------------------------------------------------------------------
 ---------------------------------------------------------------------------*/
+//signe up admin
+void s_admin()
+{
+    admin admin;
+    pass_admin P_admin;
+    FILE* file = fopen("/Users/mac/Desktop/ProjetEC/csv_files/Admin.csv", "a");
+    if (file == NULL)
+    {
+        printf("Erreur lors de l'ouverture du fichier CSV.\n");
+        return;
+    }
 
-void registerAccount(char *filename) {
+    printf("CNE: ");
+    scanf("%s", admin.CNE);
+
+    printf("Nom : ");
+    scanf("%s", admin.last_name);
+
+    printf("Prénom : ");
+    scanf("%s", admin.first_name);
+
+    printf("Adresse: ");
+    scanf("%s", admin.address);
+
+    printf("Email: ");
+    scanf("%s", admin.email);
+
+    printf("Téléphone: ");
+    scanf("%s", admin.phone);
+
+    printf("Entrez votre mot de passe: ");
+    scanf("%s", P_admin.password);
+    strcpy(P_admin.CNE_admin, admin.CNE);
+
+    FILE* file1 = fopen("/Users/mac/Desktop/ProjetEC/csv_files/password_admin.dat", "a");
+    if (!file1) {
+        perror("Erreur lors de l'ouverture du fichier CSV");
+        return;
+    }
+    fwrite(&P_admin, sizeof(pass_admin), 1, file1);
+    fclose(file1);
+
+    fprintf(file, "%s, %s, %s, %s, %s\n", admin.CNE, admin.last_name, admin.first_name, admin.address, admin.email, admin.phone);
+    fclose(file);
+    printf("\033[1;32m");
+    printf("Admin enregistré avec succès !\n");
+    printf("\033[0m");
+    printf("------------------------------\n");
+}
+
+//fonction qui permete de creer un compte client
+void registerAccount(char *filename) 
+{
+    srand(time(NULL));
     Account account;
     pass P;
     char line[taille_maximalle];
@@ -63,8 +115,13 @@ void registerAccount(char *filename) {
 
     strcpy(account.status, "actif"); // Par défaut, le compte est actif
 
+    printf("\033[1;32m");
     printf("Compte enregistré avec succès !\n");
-    printf("Numéro de compte est : %d\n", account_number);
+    printf("\033[0m");
+    printf("Numéro de compte est : ");
+    printf("\033[1;33m");
+    printf("%d\n", account_number);
+    printf("\033[0m");
     printf("--------------------------------\n");
     printf("--------------------------------\n");    
     FILE *file1 = fopen(filename, "a"); // Ouvre le fichier en mode ajout
@@ -93,48 +150,92 @@ void registerAccount(char *filename) {
     fclose(file2);
 }
 
-
 /*-------------------------------------------------------------------------
 ---------------------------------------------------------------------------
 ---------------------------------------------------------------------------*/
-bool loge_in() {
+bool loge_in(int i) {
     int account_number;
+    char CNE[10];
     char password[50];
     pass P;
-
-    FILE *file = fopen("/Users/mac/Desktop/ProjetEC/csv_files/password.dat", "r");
-    if (!file) { 
-        printf("Error: Unable to open the password file.\n");
-        return false;
-    }
-
-    printf("Entrez votre numéro de compte : ");
-    scanf("%d", &account_number);
-
-    printf("Entrez votre mot de passe : ");
-    scanf("%s", password); 
-
-    rewind(file);
-    while (fread(&P, sizeof(pass), 1, file)) {
-        if (account_number == P.Acc_nb && strcmp(password, P.password) == 0) {
-            fclose(file); 
-            #ifdef _WIN32
-                system("cls");
-            #else
-                system("clear");
-            #endif
-            printf("Connexion réussie.\n");
-            printf("S'il vous plaît, attendez.\n");
-            sleep(2);
-            return true;
+   pass_admin P_admin;
+    if (i == 1)
+    {
+        FILE* f_admin = fopen("/Users/mac/Desktop/ProjetEC/csv_files/password_admin.dat", "r");
+        if (!f_admin) {
+            printf("Erreur: Impossible d'ouvrir le fichier.\n");
+            return false;
+        }
+        printf("Entrez votre CNE : ");
+        scanf("%s", CNE);
+        printf("Entrez votre mot de passe : ");
+        scanf("%s", password);
+        while (fread(&P_admin, sizeof(pass_admin), 1, f_admin)) 
+        {
+            if (strcmp(CNE, P_admin.CNE_admin) == 0 && strcmp(password, P_admin.password) == 0) 
+            {
+                fclose(f_admin);
+                #ifdef _WIN32
+                    system("cls");
+                #else
+                    system("clear");
+                #endif
+                printf("\033[1;32m");
+                printf("Connexion réussie.\n");
+                printf("\033[1;33m");
+                printf("S'il vous plaît, attendez.\n");
+                printf("\033[0m");
+                sleep(2);
+                return true;
+            }
         }
     }
+    
+    else if (i == 2)
+    {
+        FILE *file = fopen("/Users/mac/Desktop/ProjetEC/csv_files/password.dat", "r");
+        if (!file) 
+        { 
+            printf("Error: Unable to open the password file.\n");
+            return false;
+        }
 
-    fclose(file);
+        printf("Entrez votre numéro de compte : ");
+        scanf("%d", &account_number);
+
+        printf("Entrez votre mot de passe : ");
+        scanf("%s", password); 
+
+        rewind(file);
+        while (fread(&P, sizeof(pass), 1, file)) 
+        {
+            if (account_number == P.Acc_nb && strcmp(password, P.password) == 0) 
+            {
+                fclose(file); 
+                #ifdef _WIN32
+                    system("cls");
+                #else
+                    system("clear");
+                #endif
+                printf("\033[1;32m");
+                printf("Connexion réussie.\n");
+                printf("\033[1;33m");
+                printf("S'il vous plaît, attendez.\n");
+                printf("\033[0m");
+                sleep(2);
+                return true;
+            }
+        }
+    }
+    
+    
+    printf("\033[1;31m");
     printf("Numéro de compte ou mot de passe incorrect.\n");
+    printf("\033[0m");
     sleep(1);
     return false;
 }
+
 
 
 /*-------------------------------------------------------------------------
@@ -283,8 +384,10 @@ printf("Numéro de compte|Nom|Prénom|Solde|Email|Statut du compte\n");
 printf("------------------------------------------------------------------------------------------------\n");
 while(fgets(ligne, sizeof(ligne),file) != NULL){
     printf("%s", ligne);
+    printf("\033[1;34m");
     printf("----------------------------------------------------------------------------\n");
     printf("----------------------------------------------------------------------------\n");
+    printf("\033[0m");
 
 }
 fclose(file);
@@ -313,7 +416,7 @@ int recherche_Compte(char File_name[]) {
                    account.address, account.email, account.phone,
                    &account.balance, account.status);
             i++;
-            if ((account.account_number == num) /*&& (strcmp(account.last_name,nom)==0)*/){    
+            if (account.account_number == num){    
                 fclose(fichier);
                 printf("------------------------------\n");
                 printf("------------------------------\n");
@@ -385,3 +488,6 @@ void trier_compte(char File_name[])
     printf("Tri des comptes effectué avec succès.\n");
         
 }
+/*-------------------------------------------------------------------------
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------*/

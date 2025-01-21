@@ -4,27 +4,53 @@
 #include <unistd.h>
 #include "fonction.h"
 
-void showMenu() {
-    printf("\n=== Menu de gestion bancaire ===\n");
+void clearScreen() 
+{
+    #ifdef _WIN32
+        system("cls");
+    #else
+        system("clear");
+    #endif
+}
+
+void menu_C()
+{
+    printf("\033[1;32m");
+    printf("\n\t\t\t\t=== Bonjour cher client(e) ===\n");
+    printf("\t\t\t-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-\n\n");
+    printf("\033[0m");
     printf("1. Modifier un compte\n");
-    printf("2. Supprimer un compte\n");
-    printf("3. Afficher tous les comptes\n");
-    printf("4. Fait un dépôt\n");
-    printf("5. Fait un retrait\n");
-    printf("6. Fait un transfert\n");
-    printf("7. Rechercher un compte par le numéro de compte\n");
-    printf("8. Trier les comptes par solde\n");
+    printf("2. Fait un dépôt\n");
+    printf("3. Fait un retrait\n");
+    printf("4. Fait un transfert\n");
+    printf("0. Quitter\n");
+    printf("Votre choix : ");
+}
+
+void menu_admin() 
+{
+    printf("\033[1;32m");
+    printf("\n\t\t\t\t=== Menu de gestion bancaire ===\n");
+    printf("\t\t\t-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_\n\n");
+    printf("\033[0m");
+    printf("1. Supprimer un compte\n");
+    printf("2. Afficher tous les comptes\n");
+    printf("3. Rechercher un compte par le numéro de compte\n");
+    printf("4. Trier les comptes par solde\n");
     printf("0. Quitter\n");
     printf("Votre choix : ");
 }
 
 void menu0()
 {
-    printf("Bienvenue dans notre application de gestion bancaire\n");
-        printf("-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_\n\n");
-        printf("1. Sign Up\n");
-        printf("2. Log In\n");
-        printf("0. Quit\n");
+        printf("\033[1;32m");
+        printf("\n\t\t\tBienvenue dans notre application de gestion bancaire\n");
+        printf("\t\t\t-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_\n\n");
+        printf("\033[0m");
+        printf("||1. Sign Up\n");
+        printf("||2. Log In\n");
+        printf("||3. sign up admin\n");
+        printf("||0. Quit\n");
         printf("Votre choix : ");
 }
 
@@ -53,13 +79,12 @@ void showMenu2() {
 
 void start() 
 {
-    int choix1, choix2, account_number;
+    int choix1, choix2, account_number, i;
     int t = 1;
     bool log = false;
-
     while (1) 
     {
-        system("clear");
+        clearScreen();
         menu0();
         if (scanf("%d", &choix1) != 1)
         {
@@ -74,77 +99,116 @@ void start()
                 showMenu2();
                 break;
             case 2:
-                log = loge_in();
+                clearScreen();
+                printf("1. Admin\n2. Client\nVotre choix : ");
+                if (scanf("%d", &i) != 1) 
+                {
+                    printf("Entrée invalide.\n");
+                    exit(0);
+                }
+                clearScreen();
+                log = loge_in(i);
                 if (log)
                 {
                     t = 1;
                 }
                 
-                if (log) {
+                if (log) 
+                {
                     while (t) 
                     {
-                        system("clear");
-                        showMenu();
-                        if (scanf("%d", &choix2) != 1) 
-                        {
-                            printf("Entrée invalide.\n");
-                            exit(0);
-                        }
+                        clearScreen();
 
-                        system("clear");
-                        switch (choix2) 
+                        if (i == 1) 
                         {
-                            case 1:
-                                printf("Entrez le numéro de compte : ");
-                                scanf("%d", &account_number);
-                                modifyAcc(account_number, "/Users/mac/Desktop/ProjetEC/csv_files/accounts.csv");
-                                showMenu2();
-                                break;
-                            case 2:
-                                printf("Entrez le numéro de compte à supprimer : ");
-                                scanf("%d", &account_number);
-                                delete_client(account_number, "/Users/mac/Desktop/ProjetEC/csv_files/accounts.csv");
-                                showMenu2();
-                                break;
-                            case 3:
-                                displayaccounts("/Users/mac/Desktop/ProjetEC/csv_files/accounts.csv");
-                                showMenu2();
-                                break;
-                            case 4:
-                                printf("Entrez le numéro de compte : ");
-                                scanf("%d", &account_number);
-                                makeDeposit(account_number, "/Users/mac/Desktop/ProjetEC/csv_files/accounts.csv");
-                                showMenu2();
-                                break;
-                            case 5:
-                                printf("Entrez le numéro de compte : ");
-                                scanf("%d", &account_number);
-                                makeWithdrawal(account_number, "/Users/mac/Desktop/ProjetEC/csv_files/accounts.csv");
-                                showMenu2();
-                                break;
-                            case 6:
-                                transfert("/Users/mac/Desktop/ProjetEC/csv_files/accounts.csv");
-                                showMenu2();
-                                break;
-                            case 7:
-                                recherche_Compte("/Users/mac/Desktop/ProjetEC/csv_files/accounts.csv");
-                                showMenu2();
-                                break;
-                            case 8:
-                                trier_compte("/Users/mac/Desktop/ProjetEC/csv_files/accounts.csv");
-                                displayaccounts("/Users/mac/Desktop/ProjetEC/csv_files/accounts.csv");
-                                showMenu2();
-                                break;
-                            case 0:
-                                printf("Loading...\n");
-                                sleep(1);
-                                t = 0;
-                                break;
-                            default:
-                                printf("Choix invalide, veuillez réessayer.\n");
+                            menu_admin();
+                            if (scanf("%d", &choix2) != 1) 
+                            {
+                                printf("Entrée invalide.\n");
+                                exit(0);
+                            }
+                            clearScreen();
+                            switch (choix2)
+                            {
+                                case 1:
+                                    printf("Entrez le numéro de compte à supprimer : ");
+                                    scanf("%d", &account_number);
+                                    delete_client(account_number, "/Users/mac/Desktop/ProjetEC/csv_files/accounts.csv");
+                                    showMenu2();
+                                    break;
+                                case 2:
+                                    displayaccounts("/Users/mac/Desktop/ProjetEC/csv_files/accounts.csv");
+                                    showMenu2();
+                                    break;
+                                case 3:
+                                    recherche_Compte("/Users/mac/Desktop/ProjetEC/csv_files/accounts.csv");
+                                    showMenu2();
+                                    break;
+                                case 4:
+                                    trier_compte("/Users/mac/Desktop/ProjetEC/csv_files/accounts.csv");
+                                    displayaccounts("/Users/mac/Desktop/ProjetEC/csv_files/accounts.csv");
+                                    showMenu2();
+                                    break;
+                                case 0:
+                                    printf("Loading...\n");
+                                    sleep(1);
+                                    t = 0;
+                                    break;
+                                default:
+                                    printf("Choix invalide, veuillez réessayer.\n");
+                                    break;
+                            }
+                        } 
+                        else 
+                        {
+                            menu_C();
+                            if (scanf("%d", &choix2) != 1) 
+                            {
+                                printf("Entrée invalide.\n");
+                                exit(0);
+                            }
+                            clearScreen();
+
+                            switch (choix2) 
+                            {
+                                case 1:
+                                    printf("Entrez le numéro de compte : ");
+                                    scanf("%d", &account_number);
+                                    modifyAcc(account_number, "/Users/mac/Desktop/ProjetEC/csv_files/accounts.csv");
+                                    showMenu2();
+                                    break;
+                                case 2:
+                                    printf("Entrez le numéro de compte : ");
+                                    scanf("%d", &account_number);
+                                    makeDeposit(account_number, "/Users/mac/Desktop/ProjetEC/csv_files/accounts.csv");
+                                    showMenu2();
+                                    break;
+                                case 3:
+                                    printf("Entrez le numéro de compte : ");
+                                    scanf("%d", &account_number);
+                                    makeWithdrawal(account_number, "/Users/mac/Desktop/ProjetEC/csv_files/accounts.csv");
+                                    showMenu2();
+                                    break;
+                                case 4:
+                                    transfert("/Users/mac/Desktop/ProjetEC/csv_files/accounts.csv");
+                                    showMenu2();
+                                    break;
+                                case 0:
+                                    printf("Loading...\n");
+                                    sleep(1);
+                                    t = 0;
+                                    break;
+                                default:
+                                    printf("Choix invalide, veuillez réessayer.\n");
+                                    break;
+                            }
                         }
                     }
                 }
+                break;
+            case 3:
+                s_admin();
+                showMenu2();
                 break;
             case 0:
                 printf("(^^) Au revoir !!\n");
