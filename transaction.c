@@ -17,7 +17,7 @@ void transfert(char *file_name)
         printf("Erreur : Impossible d'ouvrir le fichier %s.\n", file_name);
         return;
     }
-    FILE* temp = fopen("/Users/mac/Desktop/ProjetEC/csv_files/temp.CSV", "w");
+    FILE* temp = fopen(f_temp, "w");
     if (!temp) 
     {
         printf("Erreur : Impossible de créer le fichier temporaire.\n");
@@ -48,7 +48,7 @@ void transfert(char *file_name)
                 printf("Solde insuffisant\n");
                 fclose(fichier);
                 fclose(temp);
-                remove("/Users/mac/Desktop/ProjetEC/csv_files/temp.CSV");
+                remove(f_temp);
                 return;
             }
         }
@@ -71,7 +71,7 @@ void transfert(char *file_name)
         printf("L'un des comptes n'existe pas.\n");
         fclose(fichier);
         fclose(temp);
-        remove("/Users/mac/Desktop/ProjetEC/csv_files/temp.CSV");
+        remove(f_temp);
         return;
     }
     
@@ -79,9 +79,9 @@ void transfert(char *file_name)
     fclose(temp);
 
     remove(file_name);
-    rename("/Users/mac/Desktop/ProjetEC/csv_files/temp.CSV", file_name);
+    rename(f_temp, file_name);
 
-    FILE* f = fopen("/Users/mac/Desktop/ProjetEC/csv_files/transactions.CSV", "a");
+    FILE* f = fopen(transactions_f, "a");
     if (f == NULL)
     {
         printf("Impossible d'ouvrir le fichier\n");
@@ -100,7 +100,7 @@ void makeDeposit(int acc_num, char file_name[]) {
     char ligne[taille_maximalle];
     int t = 0;
     FILE* fichier = fopen(file_name,"r");
-    FILE* temp = fopen("/Users/mac/Desktop/ProjetEC/csv_files/temp.CSV", "w");
+    FILE* temp = fopen(f_temp, "w");
     while(fgets(ligne,taille_maximalle,fichier ))
     {
 		sscanf(ligne, "%d,%[^,],%[^,],%[^,],%[^,],%[^,],%f,%s",
@@ -116,8 +116,17 @@ void makeDeposit(int acc_num, char file_name[]) {
             if (montant > 0) 
             {
                 account.balance += montant;
-                printf("depot de %.3f effectué avec succès :) pour le compte %d !!\n", montant,account.account_number);
-                printf("Nouveau solde : %.3f\n", account.balance);
+                printf("depot de %.3f effectué avec succès :) pour le compte: ", montant);
+                
+                printf("\033[1;32m");
+                printf("%d ", account.account_number);
+                printf("\033[0m");
+                printf("!!\n");
+
+                printf("Nouveau solde : ");
+                printf("\033[96m");
+                printf("%.3f\n", account.balance);
+                printf("\033[0m");
             }
             else 
             {
@@ -141,7 +150,7 @@ void makeDeposit(int acc_num, char file_name[]) {
         fclose(fichier);
         fclose(temp);
         printf("le compte n'existe pas!!\n");
-        remove("/Users/mac/Desktop/ProjetEC/csv_files/temp.CSV");
+        remove(f_temp);
         return;
 
     }
@@ -149,9 +158,9 @@ void makeDeposit(int acc_num, char file_name[]) {
     fclose(fichier);
     fclose(temp);
     remove(file_name);
-    rename("/Users/mac/Desktop/ProjetEC/csv_files/temp.CSV", file_name);
+    rename(f_temp, file_name);
             
-    FILE* f = fopen("/Users/mac/Desktop/ProjetEC/csv_files/transactions.CSV", "a");
+    FILE* f = fopen(transactions_f, "a");
     if (f == NULL)
     {
         printf("Impossible d'ouvrir le fichier\n");
@@ -171,7 +180,7 @@ void makeWithdrawal(int acc_num, char file_name[]) {
     int t = 0;
     char ligne[taille_maximalle];
     FILE* fichier = fopen(file_name,"r");
-    FILE* temp = fopen("/Users/mac/Desktop/ProjetEC/csv_files/temp.CSV", "w");
+    FILE* temp = fopen(f_temp, "w");
     while(fgets(ligne ,taille_maximalle ,fichier ))
     {
 		sscanf(ligne, "%d,%[^,],%[^,],%[^,],%[^,],%[^,],%f,%s",
@@ -187,8 +196,17 @@ void makeWithdrawal(int acc_num, char file_name[]) {
             if (montant > 0 && montant <= account.balance) 
             {
                 account.balance -= montant;
-                printf("retrait de %.3f effectué avec succès :) pour le compte %d !!\n", montant,account.account_number);
-                printf("Nouveau solde : %.3f\n", account.balance);
+                printf("retrait de %.3f effectué avec succès :) pour le compte : ", montant);
+                
+                printf("\033[1;32m");
+                printf("%d ", account.account_number);
+                printf("\033[0m");
+                printf("!!\n");
+                
+                printf("Nouveau solde : ");
+                printf("\033[96m");
+                printf("%.3f\n", account.balance);
+                printf("\033[0m");
             }
             else 
             {
@@ -212,7 +230,7 @@ void makeWithdrawal(int acc_num, char file_name[]) {
         fclose(fichier);
         fclose(temp);
         printf("le compte n'existe pas!!\n");
-        remove("/Users/mac/Desktop/ProjetEC/csv_files/temp.CSV");
+        remove(f_temp);
         return;
 
     }
@@ -220,9 +238,9 @@ void makeWithdrawal(int acc_num, char file_name[]) {
     fclose(fichier);
     fclose(temp);
     remove(file_name);
-    rename("/Users/mac/Desktop/ProjetEC/csv_files/temp.CSV", file_name);
+    rename(f_temp, file_name);
 
-    FILE* f = fopen("/Users/mac/Desktop/ProjetEC/csv_files/transactions.CSV", "a");
+    FILE* f = fopen(transactions_f, "a");
     
     if (f == NULL)
     {

@@ -1,6 +1,12 @@
 #include <stdbool.h>
 #define taille_maximalle 1000
-
+#define Acc_csv "/Users/mac/Desktop/ProjetEC/csv_files/accounts.csv"
+#define Acc_admin "/Users/mac/Desktop/ProjetEC/csv_files/Admin.csv"
+#define password_admin "/Users/mac/Desktop/ProjetEC/csv_files/password_admin.dat"
+#define password_c "/Users/mac/Desktop/ProjetEC/csv_files/password.dat"
+#define f_temp "/Users/mac/Desktop/ProjetEC/csv_files/temp.CSV"
+#define f_stored "/Users/mac/Desktop/ProjetEC/csv_files/stored.CSV"
+#define transactions_f "/Users/mac/Desktop/ProjetEC/csv_files/transactions.CSV"
 
 typedef struct {
     char CNE[10];

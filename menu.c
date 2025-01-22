@@ -4,7 +4,7 @@
 #include <unistd.h>
 #include "fonction.h"
 
-void clearScreen() 
+void clearScreen()
 {
     #ifdef _WIN32
         system("cls");
@@ -60,20 +60,14 @@ void showMenu2() {
     scanf("%d", &a);
     if (a == 0) {
         // Cross-platform clearing and exit message
-        #ifdef _WIN32
-            system("cls"); // Clear screen for Windows
-        #else
-            system("clear"); // Clear screen for macOS/Linux
-        #endif
+        clearScreen();
+        printf("\033[96m");
         printf("(^^) Au revoir !!\n");
+        printf("\033[0m");
         exit(0);
     } else {
         // Cross-platform clearing for return to the main menu
-        #ifdef _WIN32
-            system("cls");
-        #else
-            system("clear");
-        #endif
+        clearScreen();
     }
 }
 
@@ -95,7 +89,7 @@ void start()
         switch (choix1) 
         {
             case 1:
-                registerAccount("/Users/mac/Desktop/ProjetEC/csv_files/accounts.csv");
+                registerAccount(Acc_csv);
                 showMenu2();
                 break;
             case 2:
@@ -133,20 +127,20 @@ void start()
                                 case 1:
                                     printf("Entrez le numéro de compte à supprimer : ");
                                     scanf("%d", &account_number);
-                                    delete_client(account_number, "/Users/mac/Desktop/ProjetEC/csv_files/accounts.csv");
+                                    delete_client(account_number, Acc_csv);
                                     showMenu2();
                                     break;
                                 case 2:
-                                    displayaccounts("/Users/mac/Desktop/ProjetEC/csv_files/accounts.csv");
+                                    displayaccounts(Acc_csv);
                                     showMenu2();
                                     break;
                                 case 3:
-                                    recherche_Compte("/Users/mac/Desktop/ProjetEC/csv_files/accounts.csv");
+                                    recherche_Compte(Acc_csv);
                                     showMenu2();
                                     break;
                                 case 4:
-                                    trier_compte("/Users/mac/Desktop/ProjetEC/csv_files/accounts.csv");
-                                    displayaccounts("/Users/mac/Desktop/ProjetEC/csv_files/accounts.csv");
+                                    trier_compte(Acc_csv);
+                                    displayaccounts(Acc_csv);
                                     showMenu2();
                                     break;
                                 case 0:
@@ -174,23 +168,23 @@ void start()
                                 case 1:
                                     printf("Entrez le numéro de compte : ");
                                     scanf("%d", &account_number);
-                                    modifyAcc(account_number, "/Users/mac/Desktop/ProjetEC/csv_files/accounts.csv");
+                                    modifyAcc(account_number, Acc_csv);
                                     showMenu2();
                                     break;
                                 case 2:
                                     printf("Entrez le numéro de compte : ");
                                     scanf("%d", &account_number);
-                                    makeDeposit(account_number, "/Users/mac/Desktop/ProjetEC/csv_files/accounts.csv");
+                                    makeDeposit(account_number, Acc_csv);
                                     showMenu2();
                                     break;
                                 case 3:
                                     printf("Entrez le numéro de compte : ");
                                     scanf("%d", &account_number);
-                                    makeWithdrawal(account_number, "/Users/mac/Desktop/ProjetEC/csv_files/accounts.csv");
+                                    makeWithdrawal(account_number, Acc_csv);
                                     showMenu2();
                                     break;
                                 case 4:
-                                    transfert("/Users/mac/Desktop/ProjetEC/csv_files/accounts.csv");
+                                    transfert(Acc_csv);
                                     showMenu2();
                                     break;
                                 case 0:

@@ -6,16 +6,15 @@
 #include <unistd.h>
 #include "fonction.h"
 
-
 /*-------------------------------------------------------------------------
 ---------------------------------------------------------------------------
 ---------------------------------------------------------------------------*/
-//signe up admin
+// signe up admin
 void s_admin()
 {
     admin admin;
     pass_admin P_admin;
-    FILE* file = fopen("/Users/mac/Desktop/ProjetEC/csv_files/Admin.csv", "a");
+    FILE *file = fopen(Acc_admin, "a");
     if (file == NULL)
     {
         printf("Erreur lors de l'ouverture du fichier CSV.\n");
@@ -44,8 +43,9 @@ void s_admin()
     scanf("%s", P_admin.password);
     strcpy(P_admin.CNE_admin, admin.CNE);
 
-    FILE* file1 = fopen("/Users/mac/Desktop/ProjetEC/csv_files/password_admin.dat", "a");
-    if (!file1) {
+    FILE *file1 = fopen(password_admin, "a");
+    if (!file1)
+    {
         perror("Erreur lors de l'ouverture du fichier CSV");
         return;
     }
@@ -60,8 +60,8 @@ void s_admin()
     printf("------------------------------\n");
 }
 
-//fonction qui permete de creer un compte client
-void registerAccount(char *filename) 
+// fonction qui permete de creer un compte client
+void registerAccount(char *filename)
 {
     srand(time(NULL));
     Account account;
@@ -75,20 +75,19 @@ void registerAccount(char *filename)
         return;
     }
 
-     while (fgets(line, taille_maximalle, file))
-     {
+    while (fgets(line, taille_maximalle, file))
+    {
         sscanf(line, "%d,%[^,],%[^,],%[^,],%[^,],%[^,],%f,%s",
-            &account.account_number, account.first_name, account.last_name,
-            account.address, account.email, account.phone,
-            &account.balance, account.status);
+               &account.account_number, account.first_name, account.last_name,
+               account.address, account.email, account.phone,
+               &account.balance, account.status);
 
+        account_number = (rand() % 900000) + 100000;
+        if (account_number == account.account_number)
+        {
             account_number = (rand() % 900000) + 100000;
-            if (account_number == account.account_number)
-            {
-                account_number = (rand() % 900000) + 100000;
-            }
-            
-     }
+        }
+    }
 
     fclose(file);
     printf("Nom : ");
@@ -110,7 +109,7 @@ void registerAccount(char *filename)
     scanf("%f", &account.balance);
 
     printf("entree le mote de passe: ");
-    scanf("%s",P.password);
+    scanf("%s", P.password);
     P.Acc_nb = account_number;
 
     strcpy(account.status, "actif"); // Par défaut, le compte est actif
@@ -123,9 +122,10 @@ void registerAccount(char *filename)
     printf("%d\n", account_number);
     printf("\033[0m");
     printf("--------------------------------\n");
-    printf("--------------------------------\n");    
+    printf("--------------------------------\n");
     FILE *file1 = fopen(filename, "a"); // Ouvre le fichier en mode ajout
-    if (!file) {
+    if (!file)
+    {
         perror("Erreur lors de l'ouverture du fichier CSV");
         return;
     }
@@ -141,8 +141,9 @@ void registerAccount(char *filename)
             account.status);
 
     fclose(file1);
-    FILE *file2 = fopen("/Users/mac/Desktop/ProjetEC/csv_files/password.dat", "a"); 
-    if (!file2) {
+    FILE *file2 = fopen(password_c, "a");
+    if (!file2)
+    {
         perror("Erreur lors de l'ouverture du fichier CSV");
         return;
     }
@@ -153,16 +154,18 @@ void registerAccount(char *filename)
 /*-------------------------------------------------------------------------
 ---------------------------------------------------------------------------
 ---------------------------------------------------------------------------*/
-bool loge_in(int i) {
+bool loge_in(int i)
+{
     int account_number;
     char CNE[10];
     char password[50];
     pass P;
-   pass_admin P_admin;
+    pass_admin P_admin;
     if (i == 1)
     {
-        FILE* f_admin = fopen("/Users/mac/Desktop/ProjetEC/csv_files/password_admin.dat", "r");
-        if (!f_admin) {
+        FILE *f_admin = fopen(password_admin, "r");
+        if (!f_admin)
+        {
             printf("Erreur: Impossible d'ouvrir le fichier.\n");
             return false;
         }
@@ -170,16 +173,12 @@ bool loge_in(int i) {
         scanf("%s", CNE);
         printf("Entrez votre mot de passe : ");
         scanf("%s", password);
-        while (fread(&P_admin, sizeof(pass_admin), 1, f_admin)) 
+        while (fread(&P_admin, sizeof(pass_admin), 1, f_admin))
         {
-            if (strcmp(CNE, P_admin.CNE_admin) == 0 && strcmp(password, P_admin.password) == 0) 
+            if (strcmp(CNE, P_admin.CNE_admin) == 0 && strcmp(password, P_admin.password) == 0)
             {
                 fclose(f_admin);
-                #ifdef _WIN32
-                    system("cls");
-                #else
-                    system("clear");
-                #endif
+                clearScreen();
                 printf("\033[1;32m");
                 printf("Connexion réussie.\n");
                 printf("\033[1;33m");
@@ -190,12 +189,12 @@ bool loge_in(int i) {
             }
         }
     }
-    
+
     else if (i == 2)
     {
-        FILE *file = fopen("/Users/mac/Desktop/ProjetEC/csv_files/password.dat", "r");
-        if (!file) 
-        { 
+        FILE *file = fopen(password_c, "r");
+        if (!file)
+        {
             printf("Error: Unable to open the password file.\n");
             return false;
         }
@@ -204,19 +203,15 @@ bool loge_in(int i) {
         scanf("%d", &account_number);
 
         printf("Entrez votre mot de passe : ");
-        scanf("%s", password); 
+        scanf("%s", password);
 
         rewind(file);
-        while (fread(&P, sizeof(pass), 1, file)) 
+        while (fread(&P, sizeof(pass), 1, file))
         {
-            if (account_number == P.Acc_nb && strcmp(password, P.password) == 0) 
+            if (account_number == P.Acc_nb && strcmp(password, P.password) == 0)
             {
-                fclose(file); 
-                #ifdef _WIN32
-                    system("cls");
-                #else
-                    system("clear");
-                #endif
+                fclose(file);
+                clearScreen();
                 printf("\033[1;32m");
                 printf("Connexion réussie.\n");
                 printf("\033[1;33m");
@@ -227,8 +222,7 @@ bool loge_in(int i) {
             }
         }
     }
-    
-    
+
     printf("\033[1;31m");
     printf("Numéro de compte ou mot de passe incorrect.\n");
     printf("\033[0m");
@@ -236,14 +230,12 @@ bool loge_in(int i) {
     return false;
 }
 
-
-
 /*-------------------------------------------------------------------------
 ---------------------------------------------------------------------------
 ---------------------------------------------------------------------------*/
 
-//fonction qui permete de modifier un compte client
-void modifyAcc(int num_acc, char *filename) 
+// fonction qui permete de modifier un compte client
+void modifyAcc(int num_acc, char *filename)
 {
     Account account;
     int choice, found = 0;
@@ -254,8 +246,8 @@ void modifyAcc(int num_acc, char *filename)
         printf("Erreur lors de l'ouverture du fichier CSV.\n");
         return;
     }
-    
-    FILE *temp_file = fopen("/Users/mac/Desktop/ProjetEC/csv_files/temp.CSV", "w");
+
+    FILE *temp_file = fopen(f_temp, "w");
     if (temp_file == NULL)
     {
         printf("Erreur lors de l'ouverture du fichier CSV.\n");
@@ -266,10 +258,10 @@ void modifyAcc(int num_acc, char *filename)
     while (fgets(line, taille_maximalle, file))
     {
         sscanf(line, "%d,%[^,],%[^,],%[^,],%[^,],%[^,],%f,%s",
-            &account.account_number, account.first_name, account.last_name,
-            account.address, account.email, account.phone,
-            &account.balance, account.status);
-    
+               &account.account_number, account.first_name, account.last_name,
+               account.address, account.email, account.phone,
+               &account.balance, account.status);
+
         if (num_acc == account.account_number)
         {
             found = 1;
@@ -282,24 +274,24 @@ void modifyAcc(int num_acc, char *filename)
 
             switch (choice)
             {
-                case 1:
-                    printf("Enter new address: ");
-                    scanf(" %[^\n]s", account.address);
-                    break;
-                case 2:
-                    printf("Enter new email: ");
-                    scanf(" %s", account.email);
-                    break;
-                case 3:
-                    printf("Enter new phone: ");
-                    scanf(" %s", account.phone);
-                    break;
-                default:
-                    printf("Invalid choice.\n");
-                    break;
+            case 1:
+                printf("Enter new address: ");
+                scanf(" %[^\n]s", account.address);
+                break;
+            case 2:
+                printf("Enter new email: ");
+                scanf(" %s", account.email);
+                break;
+            case 3:
+                printf("Enter new phone: ");
+                scanf(" %s", account.phone);
+                break;
+            default:
+                printf("Invalid choice.\n");
+                break;
             }
         }
-        
+
         fprintf(temp_file, "%d,%s,%s,%s,%s,%s,%.2f,%s\n",
                 account.account_number,
                 account.first_name,
@@ -308,18 +300,18 @@ void modifyAcc(int num_acc, char *filename)
                 account.email,
                 account.phone,
                 account.balance,
-                account.status); 
+                account.status);
     }
 
     fclose(file);
     fclose(temp_file);
     remove(filename);
-    rename("/Users/mac/Desktop/ProjetEC/csv_files/temp.CSV", filename);
+    rename(f_temp, filename);
 
-    if(!found)
+    if (!found)
     {
         printf("Le compte n'existe pas!!\n");
-        remove("/Users/mac/Desktop/ProjetEC/csv_files/temp.CSV");
+        remove(f_temp);
     }
 }
 
@@ -327,134 +319,147 @@ void modifyAcc(int num_acc, char *filename)
 ---------------------------------------------------------------------------
 ---------------------------------------------------------------------------*/
 
-//supprimer un compte 
-void delete_client(int num, char File_name[]){
+// supprimer un compte
+void delete_client(int num, char File_name[])
+{
     Account account;
-	int t=0;
-	char ligne[taille_maximalle];
-	FILE* fichier; 
-	FILE* temp;
-	
-	fichier = fopen(File_name,"r");
-	temp = fopen("/Users/mac/Desktop/ProjetEC/csv_files/temp.CSV", "w");
-	
-	while(fgets(ligne,taille_maximalle,fichier )){
-		sscanf(ligne,"%d",&account.account_number);
-        sscanf(ligne,"%s",account.first_name);
-        sscanf(ligne,"%s",account.last_name);
-        sscanf(ligne,"%s",account.address);
-        sscanf(ligne,"%s",account.email);
-        sscanf(ligne,"%s",account.phone);
-        sscanf(ligne,"%f",account.balance);
-        sscanf(ligne,"%s",account.status);
-		if(num != account.account_number){
-		 fprintf(temp,"%s",ligne);}
-		else
-		t = 1;
-	}
+    int t = 0;
+    char ligne[taille_maximalle];
+    FILE *fichier;
+    FILE *temp;
 
-	fclose(fichier);	 
+    fichier = fopen(File_name, "r");
+    temp = fopen(f_temp, "w");
+
+    while (fgets(ligne, taille_maximalle, fichier))
+    {
+        sscanf(ligne, "%d", &account.account_number);
+        sscanf(ligne, "%s", account.first_name);
+        sscanf(ligne, "%s", account.last_name);
+        sscanf(ligne, "%s", account.address);
+        sscanf(ligne, "%s", account.email);
+        sscanf(ligne, "%s", account.phone);
+        sscanf(ligne, "%f", account.balance);
+        sscanf(ligne, "%s", account.status);
+        if (num != account.account_number)
+        {
+            fprintf(temp, "%s", ligne);
+        }
+        else
+            t = 1;
+    }
+
+    fclose(fichier);
     fclose(temp);
-    
-	    if(t){
-    	remove(File_name);
-    	rename("/Users/mac/Desktop/ProjetEC/csv_files/temp.CSV",File_name);
-    	printf("le compte est supprime.\n");}
-	    else {
-        remove("/Users/mac/Desktop/ProjetEC/csv_files/temp.CSV");
-	    printf("le compte n'existe pas :( !!!\n"); }
-} 
+
+    if (t)
+    {
+        remove(File_name);
+        rename(f_temp, File_name);
+        printf("le compte est supprime.\n");
+    }
+    else
+    {
+        remove(f_temp);
+        printf("le compte n'existe pas :( !!!\n");
+    }
+}
 
 /*-------------------------------------------------------------------------
 ---------------------------------------------------------------------------
 ---------------------------------------------------------------------------*/
 
-
-//affichier les listes de compte
-void displayaccounts(char filename[]){
-    FILE*file=fopen(filename,"r");
-    if(file==NULL){
-            printf("erreur:impossible d'ouvrir le fichier %s \n",filename);
-return ;} 
-Account account;
-char ligne[taille_maximalle];
-printf("\n Liste des comptes enregistrés:\n"); 
-printf("------------------------------------------------------------------------------------------------\n");
-printf("Numéro de compte|Nom|Prénom|Solde|Email|Statut du compte\n");
-printf("------------------------------------------------------------------------------------------------\n");
-while(fgets(ligne, sizeof(ligne),file) != NULL){
-    printf("%s", ligne);
-    printf("\033[1;34m");
-    printf("----------------------------------------------------------------------------\n");
-    printf("----------------------------------------------------------------------------\n");
-    printf("\033[0m");
-
-}
-fclose(file);
+// affichier les listes de compte
+void displayaccounts(char filename[])
+{
+    FILE *file = fopen(filename, "r");
+    if (file == NULL)
+    {
+        printf("erreur:impossible d'ouvrir le fichier %s \n", filename);
+        return;
+    }
+    Account account;
+    char ligne[taille_maximalle];
+    printf("\n Liste des comptes enregistrés:\n");
+    printf("------------------------------------------------------------------------------------------------\n");
+    printf("Numéro de compte|Nom|Prénom|Solde|Email|Statut du compte\n");
+    printf("------------------------------------------------------------------------------------------------\n");
+    while (fgets(ligne, sizeof(ligne), file) != NULL)
+    {
+        printf("%s", ligne);
+        printf("\033[1;34m");
+        printf("----------------------------------------------------------------------------\n");
+        printf("----------------------------------------------------------------------------\n");
+        printf("\033[0m");
+    }
+    fclose(file);
 }
 /*-------------------------------------------------------------------------
 ---------------------------------------------------------------------------
 ---------------------------------------------------------------------------*/
 
-int recherche_Compte(char File_name[]) {
-  	int num;
-	char nom[50],ligne[taille_maximalle];
-    int i=0;
-    Account account ;
-    FILE* fichier;
-    fichier=fopen(File_name,"r");
-    if (!fichier) {
+int recherche_Compte(char File_name[])
+{
+    int num;
+    char nom[50], ligne[taille_maximalle];
+    int i = 0;
+    Account account;
+    FILE *fichier;
+    fichier = fopen(File_name, "r");
+    if (!fichier)
+    {
         printf("Erreur: Impossible d'ouvrir le fichier.\n");
         return -1;
     }
-    
+
     printf("enter le numero du compte :");
-    scanf("%d",&num);
-    while(fgets(ligne,taille_maximalle,fichier)!=NULL){
-            sscanf(ligne, "%d,%[^,],%[^,],%[^,],%[^,],%[^,],%f,%9s",
-                   &account.account_number, account.first_name, account.last_name,
-                   account.address, account.email, account.phone,
-                   &account.balance, account.status);
-            i++;
-            if (account.account_number == num){    
-                fclose(fichier);
-                printf("------------------------------\n");
-                printf("------------------------------\n");
-                printf("Le compte existe (index %d).\n", i);
-                printf("------------------------------\n");
-                printf("------------------------------\n");
-                return i; // retourner indice account
-            }
-	 	      
-     	}
-        fclose (fichier);
-        printf("le compte n'existe pas!!\n");
-        return -1; //compte introuvable
-	    }
+    scanf("%d", &num);
+    while (fgets(ligne, taille_maximalle, fichier) != NULL)
+    {
+        sscanf(ligne, "%d,%[^,],%[^,],%[^,],%[^,],%[^,],%f,%9s",
+               &account.account_number, account.first_name, account.last_name,
+               account.address, account.email, account.phone,
+               &account.balance, account.status);
+        i++;
+        if (account.account_number == num)
+        {
+            fclose(fichier);
+            printf("------------------------------\n");
+            printf("------------------------------\n");
+            printf("Le compte existe (index %d).\n", i);
+            printf("------------------------------\n");
+            printf("------------------------------\n");
+            return i; // retourner indice account
+        }
+    }
+    fclose(fichier);
+    printf("le compte n'existe pas!!\n");
+    return -1; // compte introuvable
+}
 /*-------------------------------------------------------------------------
 ---------------------------------------------------------------------------
 ---------------------------------------------------------------------------*/
-//de trier les comptes dans le fishier CSV par solde
+// de trier les comptes dans le fishier CSV par solde
 void trier_compte(char File_name[])
 {
     Account accounts[taille_maximalle];
-    int t=0; 
+    int t = 0;
     char ligne[taille_maximalle];
-    FILE* fichier = fopen(File_name,"r");
-    if (!fichier) 
+    FILE *fichier = fopen(File_name, "r");
+    if (!fichier)
     {
         printf("Erreur : Impossible d'ouvrir le fichier %s.\n", File_name);
         return;
     }
-    FILE* stored = fopen("/Users/mac/Desktop/ProjetEC/csv_files/stored.CSV","w"); // le fishier dans le quelle on peut stockee les comte trier
-    if (!fichier) 
+    FILE *stored = fopen(f_stored, "w"); // le fishier dans le quelle on peut stockee les comte trier
+    if (!fichier)
     {
-        printf("Erreur : Impossible d'ouvrir le fichier %s.\n", "/Users/mac/Desktop/ProjetEC/csv_files/stored.CSV");
+        printf("Erreur : Impossible d'ouvrir le fichier %s.\n", f_stored);
         return;
     }
 
     Account temp;
-    while(fgets(ligne,taille_maximalle,fichier ))
+    while (fgets(ligne, taille_maximalle, fichier))
     {
         Account account;
         sscanf(ligne, "%d,%[^,],%[^,],%[^,],%[^,],%[^,],%f,%s",
@@ -477,7 +482,7 @@ void trier_compte(char File_name[])
             }
         }
     }
-    for (int i = 0; i < t; i++) 
+    for (int i = 0; i < t; i++)
     {
         fprintf(stored, "%d,%s,%s,%s,%s,%s,%.2f,%s\n",
                 accounts[i].account_number, accounts[i].first_name, accounts[i].last_name,
@@ -486,7 +491,6 @@ void trier_compte(char File_name[])
     }
     fclose(stored);
     printf("Tri des comptes effectué avec succès.\n");
-        
 }
 /*-------------------------------------------------------------------------
 ---------------------------------------------------------------------------
