@@ -39,5 +39,3 @@ This project is a Banking Management System implemented in C. It provides functi
 - Data is stored in CSV files for persistence.
 
 ---
-
-Feel free to update or adapt this draft according to your specific project details or preferences! If you need additional customization or help, let me know.
