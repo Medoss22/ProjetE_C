@@ -34,17 +34,9 @@ This project is a Banking Management System implemented in C. It provides functi
 - **Start**: Implements the core banking application logic.
   - Provides an interactive menu for administrators and clients.
 
-## How to Run
-1. Clone the repository.
-2. Compile the C files using a C compiler (e.g., `gcc`).
-3. Run the executable to interact with the system.
-
 ## Dependencies
 - Requires a C compiler.
 - Data is stored in CSV files for persistence.
-
-## License
-This project is licensed under the [MIT License](LICENSE).
 
 ---
 
